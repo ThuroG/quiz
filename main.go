@@ -58,6 +58,27 @@ func readCsvFile(csvFile string) [][]string{
 	return data
 }
 
+func runQuiz(quiz []QuizItem){
+//set counter of correct answered to 0
+var answeredCorrectInt = 0
+for i, question := range quiz{
+	var n = i+1
+	fmt.Print(strconv.Itoa(n) + ". Question: What is " + question.input + "?")
+	var answer int
+	_, err := fmt.Scanf("%d\n", &answer)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if ( answer == question.result){
+		answeredCorrectInt = answeredCorrectInt + 1
+	}
+} 
+
+answeredCorrectStr := strconv.Itoa(answeredCorrectInt)
+fmt.Print("You had " + answeredCorrectStr + " Questions correct!")
+//debug quiz
+//fmt.Printf("%+v\n", quiz)
+}
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter the CSV file: ")
@@ -71,24 +92,8 @@ func main() {
 	//convert records to array of Quiz structs
 	quiz := createQuiz(csv)
 
-	//set counter of correct answered to 0
-	var answeredCorrectInt = 0
-	for i, question := range quiz{
-		var n = i+1
-		fmt.Print(strconv.Itoa(n) + ". Question: What is " + question.input + "?")
-		var answer int
-		_, err := fmt.Scanf("%d\n", &answer)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if ( answer == question.result){
-			answeredCorrectInt = answeredCorrectInt + 1
-		}
-	} 
+	//run the quiz
+	runQuiz(quiz)
 	
-	answeredCorrectStr := strconv.Itoa(answeredCorrectInt)
-	fmt.Print("You had " + answeredCorrectStr + " Questions correct!")
-	//debug quiz
-	//fmt.Printf("%+v\n", quiz)
 
 }
